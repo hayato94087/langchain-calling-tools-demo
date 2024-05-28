@@ -46,3 +46,7 @@ const res = await llmWithTools.invoke("3 * 12 は？");
 console.log(res);
 console.log(res.tool_calls);
 
+res.tool_calls?.map(async (tool_call) => {
+  const res2 = await calculatorTool.invoke(tool_call.args)
+  console.log(res2);
+});
