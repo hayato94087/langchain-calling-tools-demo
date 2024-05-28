@@ -21,7 +21,7 @@ const calculatorSchema = z.object({
 // tools
 const calculatorTool = new DynamicStructuredTool({
   name: "calculator",
-  description: "Can perform mathematical operations.",
+  description: "計算機として足し算、引き算、掛け算、割り算を行います。",
   schema: calculatorSchema,
   func: async ({ operation, number1, number2 }) => {
     // Functions must return strings
