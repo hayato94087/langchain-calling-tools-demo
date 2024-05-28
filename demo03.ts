@@ -59,4 +59,13 @@ for await (const chunk of stream2) {
     final = final.concat(chunk);
   }
 }
-final && console.log(final.tool_calls);
+if (final) {
+  console.log(final.tool_calls);
+  final.tool_calls?.map(async (tool_call) => {
+    const res2 = await calculatorTool.invoke(tool_call.args)
+    console.log(res2);
+  });
+}
+
+
+
