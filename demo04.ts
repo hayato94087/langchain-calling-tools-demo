@@ -49,7 +49,6 @@ console.log("------------------------\n")
 console.log(res.tool_calls);
 console.log("------------------------\n\n")
 
-
 const res2 = await llmWithTools.invoke([
   new HumanMessage("333382 🦜 1932? は？"),
   new AIMessage({
