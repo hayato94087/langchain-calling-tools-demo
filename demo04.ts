@@ -1,6 +1,7 @@
 import { ChatOpenAI } from "@langchain/openai";
 import { z } from "zod";
 import { DynamicStructuredTool } from "@langchain/core/tools";
+import { HumanMessage, AIMessage, ToolMessage } from "@langchain/core/messages";
 import 'dotenv/config'
 
 // model
@@ -41,18 +42,40 @@ const calculatorTool = new DynamicStructuredTool({
 
 const llmWithTools = llm.bindTools([calculatorTool]);
 
-const res = await llmWithTools.invoke("3 🦜 12 は？");
+const res = await llmWithTools.invoke("12 🦜 3 は？");
 
 console.log(res);
 console.log("------------------------\n")
 console.log(res.tool_calls);
+console.log("------------------------\n\n")
 
-// const res2 = await llmWithTools.invoke("3 🦜 12 は？");
 
-// console.log(res2);
-// console.log(res2.tool_calls);
+const res2 = await llmWithTools.invoke([
+  new HumanMessage("333382 🦜 1932? は？"),
+  new AIMessage({
+    content: "",
+    tool_calls: [
+      {
+        id: "12345",
+        name: "calulator",
+        args: {
+          number1: 333382,
+          number2: 1932,
+          operation: "divide",
+        },
+      },
+    ],
+  }),
+  new ToolMessage({
+    tool_call_id: "12345",
+    content: "答えは 172.558.",
+  }),
+  new AIMessage("答えは 172.558."),
+  new HumanMessage("12 🦜 3 は？"),
+]);
 
-// res2.tool_calls?.map(async (tool_call) => {
-//   const res2 = await calculatorTool.invoke(tool_call.args)
-//   console.log(res2);
-// });
+
+console.log(res2);
+console.log("------------------------\n")
+console.log(res2.tool_calls);
+console.log("------------------------\n\n")
